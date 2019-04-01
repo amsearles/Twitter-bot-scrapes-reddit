@@ -1,2 +1,2 @@
 # Twitter-bot-scrapes-reddit
-small script that will allow you to post messages on twitter based on reddit posts
+Grabs posts from NBA Hot 25 subreddit and then posts the urls to twitter
