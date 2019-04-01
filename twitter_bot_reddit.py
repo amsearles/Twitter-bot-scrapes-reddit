@@ -4,58 +4,27 @@ import pandas as pd
 import datetime as dt
 from twitter import *
 #holds reddit data
-reddit = praw.Reddit(client_id='enter your client id here', \
-                     client_secret='enter your client secret here', \
-                     user_agent='name of app', \
-                     username='reddit username', \
-                     password='reddit password')
+reddit = praw.Reddit(client_id='S-FNWZ8XEqEA6Q', \
+                     client_secret='XlxBCDr51d507sGur_V93faOymA', \
+                     user_agent='til_scraper', \
+                     username='sensitiverocketsfan', \
+                     password='akiena')
 
 
 
-#I'm choosing to scrape from the NBA subreddit
+#I'm choosing to scrape from TIL
 subreddit = reddit.subreddit('NBA')
 
 #sorting by new and getting data from there
-new_subreddit = subreddit.new()
+new_subreddit = subreddit.hot(limit=25)
+token = '1111285762639618054-9dC3FSKRMmlGCjyJth75qxMRIDgcuv'
+token_secret = 'nUnfVi46s5nnGHaN5EXs9yaCVfw5w2AC03fsKrJduaDfN'
+consumer_key= 'onn48otrr2iOxyCXS98V5gTQL'
+consumer_secret= 'BJaXOhQ2OS2cNh7cnBDagAGxolYIKfjNvcAjeIdN2xUNtp4sxj'
 
-#Twitter Application Auth
-token = ''
-token_secret = ''
-consumer_key= ''
-consumer_secret= ''
 twit = Twitter(
     auth=OAuth(token, token_secret, consumer_key, consumer_secret))
 
-#stores data
-reddit_dict = { "title":[], \
-                "score":[], \
-                "id":[], \
-                "url":[],  \
-                "comms_num": [], \
-                "created": [], \
-                "body":[]}
-                
-#for loop that populates reddit_dict with data for each category
+#loops through top 25 hot posts and posts the urls to twiter
 for new_submission in new_subreddit:
-  reddit_dict["title"].append(new_submission.title)
-  twit.statuses.update(status= new_submission.title)
-  reddit_dict["score"].append(new_submission.score)
-  reddit_dict["id"].append(new_submission.id)
-  reddit_dict["url"].append(new_submission.url)
-  reddit_dict["comms_num"].append(new_submission.num_comments)
-  reddit_dict["created"].append(new_submission.created)
-  reddit_dict["body"].append(new_submission.selftext)
-
-#using pandas module to make our data readable and pretty
-reddit_data = pd.DataFrame(reddit_dict)
-
-#converting reddit's unix timestamp
-def get_date(created):
-    return dt.datetime.fromtimestamp(created)
-
-_timestamp = reddit_data["created"].apply(get_date)
-reddit_data = reddit_data.assign(timestamp = _timestamp)
-
-#exporting data to csv
-reddit_data.to_csv('reddit_til_data.csv', index=False)
-
+  twit.statuses.update(status=new_submission.url)
