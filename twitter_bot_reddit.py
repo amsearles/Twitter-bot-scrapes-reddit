@@ -3,24 +3,28 @@ import praw
 import pandas as pd
 import datetime as dt
 from twitter import *
-#holds reddit data
+
+#Twitter Access Tokens
+token = ''
+token_secret = ''
+consumer_key= ''
+consumer_secret= ''
+
+#Reddit Access Tokens
 reddit = praw.Reddit(client_id='', \
                      client_secret='', \
                      user_agent='', \
                      username='', \
                      password='')
 
-
-
-#I'm choosing to scrape from TIL
-subreddit = reddit.subreddit('NBA')
-
-#sorting by new and getting data from there
+#Customization
+sub_name = "NBA"
+hash_tag_name = "#NBA"
+delay_of_tweets = 1
+ 
+subreddit = reddit.subreddit(sub_name)
 new_subreddit = subreddit.hot(limit=25)
-token = ''
-token_secret = ''
-consumer_key= ''
-consumer_secret= ''
+
 
 twit = Twitter(
     auth=OAuth(token, token_secret, consumer_key, consumer_secret))
